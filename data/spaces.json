@@ -298,12 +298,12 @@
       "type": "property"
     },
     {
-      "name": "Chance",
+      "name": "Community Chest",
       "space": 33,
-      "type": "chance"
+      "type": "communityChest"
     },
     {
-      "name": "North Carolina Ave.",
+      "name": "Pennsylvania Ave.",
       "space": 34,
       "color": "green",
       "price": 320,
