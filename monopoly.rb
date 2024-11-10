@@ -117,7 +117,9 @@ class Monopoly
   def take_turn(player)
     roll = player.roll
     @total_rolls += 1
-    append("Rolled " + player.last_roll.to_s)
+    if (!player.in_jail?)
+      append("Rolled " + player.last_roll.to_s)
+    end
 
     was_in_jail = false
 
@@ -133,7 +135,7 @@ class Monopoly
     if player.three_doubles?
       append("Three doubles!")
       go_to_jail(player)
-      end_turn(player)
+      end_turn(player, true)
       return
     end
 
@@ -149,10 +151,10 @@ class Monopoly
     if player.doubles? && !player.in_jail? && !was_in_jail
       @total_doubles += 1
       append("Doubles! Go again.")
-      end_turn(player)
+      end_turn(player, false)
       take_turn(player)
     else
-      end_turn(player)
+      end_turn(player, true)
     end
   end
 
@@ -191,14 +193,16 @@ class Monopoly
     else
       append("Unsuccessful.")
       player.turns_in_jail += 1
-      end_turn(player)
+      end_turn(player, true)
       return false
     end
   end
 
   # Output to the logfile, and keep track of which space the player ended their turn on
-  def end_turn(player)
-    @logger.debug(@log)
+  def end_turn(player, log)
+    if (log)
+      @logger.debug(@log)
+    end
     # Increment space_count wherever the player ends their turn
     if player.in_jail?
       @space_count["(-) In Jail"] += 1
